@@ -6,6 +6,8 @@
 
 package interfaz;
 
+import static java.time.Clock.system;
+
 /**
  *
  * @author yescobar7
@@ -82,6 +84,11 @@ public class Principal extends javax.swing.JFrame {
         mnOpciones.add(jSeparator1);
 
         mnSalir.setText("Salir");
+        mnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnSalirActionPerformed(evt);
+            }
+        });
         mnOpciones.add(mnSalir);
 
         jMenuBar1.add(mnOpciones);
@@ -110,7 +117,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnOpcionesActionPerformed
-        // TODO add your handling code here:
+   
     }//GEN-LAST:event_mnOpcionesActionPerformed
 
     private void mnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAgregarActionPerformed
@@ -119,8 +126,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnAgregarActionPerformed
 
     private void mnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnReportesActionPerformed
-        // TODO add your handling code here:
+  
     }//GEN-LAST:event_mnReportesActionPerformed
+
+    private void mnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSalirActionPerformed
+    System.exit(0);
+    }//GEN-LAST:event_mnSalirActionPerformed
 
     /**
      * @param args the command line arguments
