@@ -7,7 +7,12 @@ package interfaz;
 
 import clases.Helper;
 import clases.Persona;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,12 +24,22 @@ public class Agregar extends javax.swing.JDialog {
     /**
      * Creates new form Agregar
      */
+    String ruta;
+    ObjectOutputStream salida;
     ArrayList<Persona> personas;
 
     public Agregar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        personas = new ArrayList();
+        ruta = "src/datos/personas.txt";
+        try {
+            personas = Helper.traerDatos(ruta);
+            salida = new ObjectOutputStream(new FileOutputStream(ruta));
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        Helper.volcado(salida, personas);
+        Helper.llenarTabla(tblTablaPersonas, ruta);
     }
 
     /**
@@ -168,9 +183,13 @@ public class Agregar extends javax.swing.JDialog {
         apellido = txtApellido.getText();
 
         Persona p = new Persona(cedula, nombre, apellido);
-        personas.add(p);
+        try {
+            p.guardar(salida);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
 
-        Helper.llenarTabla(tblTablaPersonas, personas);
+        Helper.llenarTabla(tblTablaPersonas, ruta);
 
         txtCedula.setText("");
         txtNombre.setText("");
@@ -189,7 +208,9 @@ public class Agregar extends javax.swing.JDialog {
     private void tblTablaPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTablaPersonasMouseClicked
         int i;
         Persona p;
+        ArrayList<Persona> personas = Helper.traerDatos(ruta);
         i = tblTablaPersonas.getSelectedRow();
+        
         p = personas.get(i);
 
         txtCedula.setText(p.getCedula());
@@ -201,11 +222,18 @@ public class Agregar extends javax.swing.JDialog {
         int i, op;
 
         op = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar a esta persona?", "Eliminar", JOptionPane.YES_NO_OPTION);
+        ArrayList<Persona> personas = Helper.traerDatos(ruta);
         if (op == JOptionPane.YES_OPTION) {
             i = tblTablaPersonas.getSelectedRow();
 
             personas.remove(i);
-            Helper.llenarTabla(tblTablaPersonas, personas);
+            try {
+            salida = new ObjectOutputStream(new FileOutputStream(ruta));
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+            Helper.volcado(salida, personas);
+            Helper.llenarTabla(tblTablaPersonas, ruta);
 
             txtCedula.setText("");
             txtNombre.setText("");
